@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Збереження паролів у cookie</title>
+</head>
+<body>
+    <h1>Збереження паролів у cookie</h1>
+
+    <input type="text" id="passwordInput" placeholder="Введіть пароль">
+    <button onclick="savePassword()">Зберегти пароль</button>
+
+    <h2>Збережені паролі:</h2>
+    <div id="savedPasswords"></div>
+    
+    <script>
+        function savePassword() {
+            var newPassword = document.getElementById("passwordInput").value;
+            var savedPasswords = getSavedPasswords();
+
+            savedPasswords.push(newPassword);
+            document.cookie = "passwords=" + JSON.stringify(savedPasswords);
+            document.getElementById("passwordInput").value = "";
+            displayPasswords();
+        }
+
+        function getSavedPasswords() {
+            var cookies = document.cookie.split(';');
+            var savedPasswords = [];
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.indexOf("passwords=") === 0) {
+                    savedPasswords = JSON.parse(cookie.substring("passwords=".length)) || [];
+                    break;
+                }
+            }
+            return savedPasswords;
+        }
+
+        function displayPasswords() {
+            var savedPasswords = getSavedPasswords();
+            var savedPasswordsDiv = document.getElementById("savedPasswords");
+            savedPasswordsDiv.innerHTML = "";
+            savedPasswords.forEach(function (password) {
+                var passwordField = document.createElement("input");
+                passwordField.type = "text";
+                passwordField.value = password;
+                passwordField.readOnly = true;
+                savedPasswordsDiv.appendChild(passwordField);
+            });
+        }
+
+        displayPasswords();
+    </script>
+</body>
+</html>

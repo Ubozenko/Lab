@@ -1,0 +1,3 @@
+ScriptInterpreterSource Registry-Strict 
+AddHandler cgi-script .bat 
+Options +ExecCGI +FollowSymlinks 
